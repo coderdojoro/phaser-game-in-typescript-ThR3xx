@@ -30,7 +30,7 @@ export default class MainMenuScene extends Phaser.Scene {
         let hero=this.physics.add.sprite(200,200,'idle-e-spirtesheet',0);
         this.anims.create({
             key:'idle-e-anim',
-            frames:this.anims.generateFrameNumbers('idle-e-spritesheet', {}),
+            frames:this.anims.generateFrameNumbers('idle-e-spirtesheet', {}),
             frameRate:10,
             repeat:-1
         });
