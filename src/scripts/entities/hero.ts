@@ -36,18 +36,6 @@ export default class Hero extends Phaser.GameObjects.Sprite {
             repeat: -1
         });
         this.anims.create({
-            key: 'walk-e-anim',
-            frames: this.anims.generateFrameNumbers('walk-e-spritesheet', {}),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'walk-s-anim',
-            frames: this.anims.generateFrameNumbers('walk-s-spritesheet', {}),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
             key: 'idle-s-anim',
             frames: this.anims.generateFrameNumbers('idle-s-spritesheet', {}),
             frameRate: 10,
@@ -56,6 +44,18 @@ export default class Hero extends Phaser.GameObjects.Sprite {
         this.anims.create({
             key: 'idle-n-anim',
             frames: this.anims.generateFrameNumbers('idle-n-spritesheet', {}),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'walk-e-anim',
+            frames: this.anims.generateFrameNumbers('walk-e-spritesheet', {}),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'walk-s-anim',
+            frames: this.anims.generateFrameNumbers('walk-s-spritesheet', {}),
             frameRate: 10,
             repeat: -1
         });
@@ -69,19 +69,19 @@ export default class Hero extends Phaser.GameObjects.Sprite {
             key: 'atk-n-anim',
             frames: this.anims.generateFrameNumbers('atk-n-spritesheet', {}),
             frameRate: 10,
-            repeat: -1
+            repeat: 0
         });
         this.anims.create({
             key: 'atk-e-anim',
             frames: this.anims.generateFrameNumbers('atk-e-spritesheet', {}),
             frameRate: 10,
-            repeat: -1
+            repeat: 0
         });
         this.anims.create({
             key: 'atk-s-anim',
             frames: this.anims.generateFrameNumbers('atk-s-spritesheet', {}),
             frameRate: 10,
-            repeat: -1
+            repeat: 0
         });
         this.rightKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.leftKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -95,6 +95,7 @@ export default class Hero extends Phaser.GameObjects.Sprite {
     preUpdate(time, delta) {
         super.preUpdate(time, delta);
         (this.body as Phaser.Physics.Arcade.Body).setVelocity(0);
+        console.log('atk: ' + this.atkKey.isDown);
         if (this.atkKey.isDown) {
             let cardinalPosition = HeroPosition[this.heroPosition].charAt(0).toLowerCase();
             this.anims.play('atk-' + cardinalPosition + '-anim');
