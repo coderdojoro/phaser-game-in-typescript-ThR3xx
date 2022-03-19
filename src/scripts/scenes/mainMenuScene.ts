@@ -1,8 +1,10 @@
 import 'phaser';
+import Grizzly from '../entities/grizzly';
 import Hero from '../entities/hero';
 
 export default class MainMenuScene extends Phaser.Scene {
     hero: Hero;
+    worldlayer: Phaser.Tilemaps.TilemapLayer;
     constructor() {
         super({ key: 'MainMenuScene' });
     }
@@ -17,6 +19,12 @@ export default class MainMenuScene extends Phaser.Scene {
         this.load.spritesheet('atk-n-spritesheet', 'assets/hero/atk_heavy_N.png', { frameWidth: 128, frameHeight: 128 });
         this.load.spritesheet('atk-e-spritesheet', 'assets/hero/atk_heavy_E.png', { frameWidth: 128, frameHeight: 128 });
         this.load.spritesheet('atk-s-spritesheet', 'assets/hero/atk_heavy_S.png', { frameWidth: 128, frameHeight: 128 });
+
+        this.load.spritesheet('grizzly-idle-spritesheet', 'assets/enemies/grizzly-idle.png', { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('grizzly-walk-n-spritesheet', 'assets/enemies/grizzly-north.png', { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('grizzly-walk-s-spritesheet', 'assets/enemies/grizzly-south.png', { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('grizzly-walk-e-spritesheet', 'assets/enemies/grizzly-east.png', { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('grizzly-die-spritesheet', 'assets/enemies/grizzly-die.png', { frameWidth: 32, frameHeight: 32 });
         this.load.image('tiles', 'assets/tilesets/ground-tileset.png');
         this.load.tilemapTiledJSON('map', 'assets/tilemaps/town.json');
     }
@@ -42,18 +50,23 @@ export default class MainMenuScene extends Phaser.Scene {
 
         let belowLayer = map.createLayer('Below hero', tileset, 0, 0);
         let objBelowLayer = map.createLayer('Objects below hero', tileset, 0, 0);
-        let worldlayer = map.createLayer('World', tileset, 0, 0);
+        this.worldlayer = map.createLayer('World', tileset, 0, 0);
         let abovelayer = map.createLayer('Above hero', tileset, 0, 0);
-        worldlayer.setCollisionBetween(tileset.firstgid, tileset.firstgid + tileset.total, true);
+        this.worldlayer.setCollisionBetween(tileset.firstgid, tileset.firstgid + tileset.total, true);
 
         let spawnPoint = map.findObject('Objects', (obj) => obj.name == 'Spawn Point');
 
         this.hero = new Hero(this, spawnPoint.x, spawnPoint.y);
 
+        let grizzlyObjects = map.getObjectLayer('Objects').objects.filter((elem) => elem.name == 'grizzly');
+        for (let grizzly of grizzlyObjects) {
+            new Grizzly(this, grizzly.x, grizzly.y);
+            
+        }
         abovelayer.setDepth(100);
         this.hero.setDepth(50);
 
-        this.physics.add.collider(this.hero, worldlayer);
+        this.physics.add.collider(this.hero, this.worldlayer);
         this.cameras.main.startFollow(this.hero);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
