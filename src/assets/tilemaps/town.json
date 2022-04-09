@@ -10753,6 +10753,32 @@
                          "wangid":[0, 2, 0, 2, 0, 2, 0, 1]
                         }]
                 }]
+        }, 
+        {
+         "columns":40,
+         "firstgid":1201,
+         "image":"..\/tilesets\/ground-tileset.png",
+         "imageheight":1020,
+         "imagewidth":1360,
+         "margin":1,
+         "name":"ground",
+         "spacing":2,
+         "tilecount":1200,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "columns":40,
+         "firstgid":2401,
+         "image":"..\/tilesets\/ground-tileset.png",
+         "imageheight":1020,
+         "imagewidth":1360,
+         "margin":1,
+         "name":"ground",
+         "spacing":2,
+         "tilecount":1200,
+         "tileheight":32,
+         "tilewidth":32
         }],
  "tilewidth":32,
  "type":"map",
