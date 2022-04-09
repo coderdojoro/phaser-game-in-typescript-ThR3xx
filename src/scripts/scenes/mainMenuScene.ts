@@ -5,6 +5,7 @@ import Hero from '../entities/hero';
 export default class MainMenuScene extends Phaser.Scene {
     hero: Hero;
     worldLayer: Phaser.Tilemaps.TilemapLayer;
+    map: Phaser.Tilemaps.Tilemap;
     constructor() {
         super({ key: 'MainMenuScene' });
     }
@@ -45,22 +46,22 @@ export default class MainMenuScene extends Phaser.Scene {
         this.cameras.main.fadeIn(2000);
         this.cameras.main.setBackgroundColor('#008080');
 
-        let map = this.make.tilemap({ key: 'map' });
-        let tileset = map.addTilesetImage('ground', 'tiles', 32, 32, 1, 2);
+        this.map = this.make.tilemap({ key: 'map' });
+        let tileset = this.map.addTilesetImage('ground', 'tiles', 32, 32, 1, 2);
 
-        let belowLayer = map.createLayer('Below hero', tileset, 0, 0);
-        let objBelowLayer = map.createLayer('Objects below hero', tileset, 0, 0);
-        this.worldLayer = map.createLayer('World', tileset, 0, 0);
-        let abovelayer = map.createLayer('Above hero', tileset, 0, 0);
+        let belowLayer = this.map.createLayer('Below hero', tileset, 0, 0);
+        let objBelowLayer = this.map.createLayer('Objects below hero', tileset, 0, 0);
+        this.worldLayer = this.map.createLayer('World', tileset, 0, 0);
+        let abovelayer = this.map.createLayer('Above hero', tileset, 0, 0);
         this.worldLayer.setCollisionBetween(tileset.firstgid, tileset.firstgid + tileset.total, true);
 
-        let spawnPoint = map.findObject('Objects', (obj) => obj.name == 'Spawn Point');
+        let spawnPoint = this.map.findObject('Objects', (obj) => obj.name == 'Spawn Point');
 
         this.hero = new Hero(this, spawnPoint.x, spawnPoint.y);
 
-        let grizzlyObjects = map.getObjectLayer('Objects').objects.filter((elem) => elem.name == 'grizzly');
+        let grizzlyObjects = this.map.getObjectLayer('Objects').objects.filter((elem) => elem.name == 'grizzly');
         for (let grizzly of grizzlyObjects) {
-        new Grizzly(this,grizzly.x, grizzly.y);            
+            new Grizzly(this,grizzly.x, grizzly.y);            
         }
 
         abovelayer.setDepth(100);
@@ -68,8 +69,8 @@ export default class MainMenuScene extends Phaser.Scene {
 
         this.physics.add.collider(this.hero, this.worldLayer);
         this.cameras.main.startFollow(this.hero);
-        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+        this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.physics.world.setBoundsCollision(true, true, true, true);
     }
 
