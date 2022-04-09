@@ -2,13 +2,13 @@ import 'phaser';
 import * as EasyStar from 'easystarjs';
 import MainMenuScene from '../scenes/mainMenuScene';
 export enum State{
-    IDLE,
+    IDLE, 
     FOLLOW
 }
 export default class Grizzly extends Phaser.GameObjects.Sprite {
     easystar: EasyStar.js;
     scene:MainMenuScene;
-    enemyState: State=State.IDLE;
+    enemyState: State = State.IDLE;
     target: Phaser.Math.Vector2;
     constructor(scene, x, y) {
         super(scene, x, y, 'idle-e-spritesheet', 0);
@@ -40,24 +40,24 @@ export default class Grizzly extends Phaser.GameObjects.Sprite {
             let distance = Phaser.Math.Distance.Between(this.x, this.y, this.scene.hero.x, this.scene.hero.y);
             if(distance<300){
                 this.comuteNextTarget();
-
             }
         }
-        if(this.enemyState==State.FOLLOW){
+        if(this.enemyState== State.FOLLOW){
             this.scene.physics.moveTo(this, this.target.x , this.target.y);
         }
     }
     comuteNextTarget(){
-        this.easystar.findPath;(
-            this.scene.map.worldToTileX(this.x),
+        this.easystar.findPath(
+            this.scene.map.worldToTileX(this.x), 
             this.scene.map.worldToTileY(this.y),
             this.scene.map.worldToTileX(this.scene.hero.x),
             this.scene.map.worldToTileY(this.scene.hero.y),
             (path) => {
-                this.target = new Phaser.Math.Vector2(this.scene.map.tileToWorldX(path[1].x)+16, (this.scene.map.tileToWorldY(path[1].y)+16));
+                this.target = new Phaser.Math.Vector2(this.scene.map.tileToWorldX(path[1].x)+16, (this.scene.map.tileToWorldY(path[1].y)+16) );
                 this.enemyState = State.FOLLOW;
             }
         );
-       this.easystar.calculate()   
-    }   
+        this.easystar.calculate();
+    }
 }
+
